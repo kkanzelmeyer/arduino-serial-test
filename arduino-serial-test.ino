@@ -1,20 +1,27 @@
 #include <MemoryFree.h>
+#include <SoftwareSerial.h>
+
+
+SoftwareSerial esp(10, 11); // RX, TX
 
 String input;
 boolean finished = false;
 
 void setup() {
-  Serial.begin(115200);     // opens serial port, sets data rate to 9600 bps
-  Serial.setTimeout(100);
+  Serial.begin(115200);
+
+  esp.begin(115200);
+  esp.setTimeout(100);
+  
 }
 
 void loop() {
 
-  while(!Serial.available()){} // do nothing
+  while(!esp.available()){} // do nothing
   
-  while (Serial.available() > 0)
+  while (esp.available() > 0)
   {
-    input = Serial.readString();
+    input = esp.readString();
   }
 
   finished = true;
@@ -29,6 +36,11 @@ void loop() {
     Serial.print("freeMemory() = ");
     Serial.println(freeMemory());
     Serial.println("");
+
+    // send a response to the ESP
+    esp.print("Hello from the Arduino!");
+
+    // reset flag
     finished = false;
   }
 
