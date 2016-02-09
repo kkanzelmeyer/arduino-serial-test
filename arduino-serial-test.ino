@@ -9,9 +9,10 @@ boolean finished = false;
 
 void setup() {
   Serial.begin(115200);
-
-  esp.begin(115200);
-  esp.setTimeout(100);
+  Serial.println("Starting the Serial Listener");
+  Serial.println("");
+  esp.begin(57600);
+  esp.setTimeout(250);
   
 }
 
@@ -27,8 +28,9 @@ void loop() {
   finished = true;
 
   if(finished) {
-    Serial.print(input);
-    Serial.print("input variable size = ");
+    Serial.println("Request received from server:");
+    Serial.println(input);
+    Serial.print("request variable size = ");
     Serial.print(input.length()*8);
     Serial.print(" bytes");
     Serial.println("");
@@ -38,7 +40,7 @@ void loop() {
     Serial.println("");
 
     // send a response to the ESP
-    esp.print("Hello from the Arduino!");
+    esp.println("{\"msg\":\"Hello from the Arduino!\"}");
 
     // reset flag
     finished = false;
